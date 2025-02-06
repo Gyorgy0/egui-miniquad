@@ -19,7 +19,7 @@ include = ["../LICENSE-APACHE", "../LICENSE-MIT", "**/*.rs", "Cargo.toml"]
 [dependencies]
 bytemuck = "1.21.0"
 egui = { version = "0.31.0", features = ["bytemuck"] }
-getrandom = { version = "0.3.1", features = ["wasm_js"] }
+getrandom = { version = "0.2.15", features = ["custom"] }
 miniquad = "0.4.6"
 quad-rand = "0.2.3"
 quad-url = "0.1"
