@@ -115,6 +115,7 @@ getrandom::register_custom_getrandom!(getrandom);
 
 // ----------------------------------------------------------------------------
 
+
 use egui::CursorIcon;
 use miniquad as mq;
 
@@ -126,6 +127,7 @@ use copypasta::ClipboardProvider;
 /// egui bindings for miniquad.
 ///
 ///
+/// 
 pub struct EguiMq {
     /// The DPI as reported by miniquad.
     native_dpi_scale: f32,
@@ -168,7 +170,7 @@ impl EguiMq {
     pub fn run(
         &mut self,
         mq_ctx: &mut dyn mq::RenderingBackend,
-        run_ui: impl FnOnce(&mut dyn mq::RenderingBackend, &egui::Context),
+        mut run_ui: impl FnMut(&mut dyn mq::RenderingBackend, &egui::Context),
     ) {
         input::on_frame_start(&mut self.egui_input, &self.egui_ctx);
 
@@ -181,10 +183,11 @@ impl EguiMq {
                 .unwrap()
                 .native_pixels_per_point = Some(self.native_dpi_scale);
         }
-
         let full_output = self
             .egui_ctx
-            .run(self.egui_input.take(), |egui_ctx| run_ui(mq_ctx, egui_ctx));
+            .run(self.egui_input.take(), |egui_ctx| {
+                run_ui(mq_ctx, &egui_ctx)
+            });
 
         let egui::FullOutput {
             platform_output,
